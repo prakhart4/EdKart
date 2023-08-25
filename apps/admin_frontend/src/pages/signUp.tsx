@@ -60,7 +60,7 @@ export default function SignUp({}: Props) {
   const onSubmit = (data: any) => {
     setUserAtom((prevData) => ({ ...prevData, isLoading: true }));
     api
-      .post("user/signUp", data)
+      .post("/user/signUp", data)
       .then(
         ({ data: signInResult }) => {
           console.log(signInResult);

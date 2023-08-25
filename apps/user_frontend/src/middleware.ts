@@ -1,16 +1,8 @@
-import { RequestHandler } from "express";
-import { jwtVerify } from "jose";
-import { parse } from "cookie";
+import { getIdFromToken } from "db";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { dbConnect } from "db";
-
-const secret = new TextEncoder().encode(process.env["SECRET"]!);
 
 export async function middleware(req: NextRequest) {
-  let db_connection = await dbConnect();
-  console.log(db_connection?.connection.readyState);
-  //if auth page allow
   if (
     req.nextUrl.pathname.startsWith("/api/signIn") ||
     req.nextUrl.pathname.startsWith("/api/signUp")
@@ -18,30 +10,27 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  //get token from the headers
   const authHeader = req.headers.get("authorization");
-
+  //get token from the cookies
   const cookie_token = req.cookies.get("token")?.value;
+
   console.log({ cookie_token, authHeader });
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    if (!cookie_token)
-      return NextResponse.json({ message: "Invalid token" }, { status: 401 });
+  if ((!authHeader || !authHeader.startsWith("Bearer ")) && !cookie_token) {
+    return NextResponse.json({ message: "Invalid token" }, { status: 401 });
   }
 
+  //remove bearer from the token and use, if nor available the use cookie token
   const token = authHeader?.split(" ")[1] ?? cookie_token;
 
-  if (!token) {
-    return NextResponse.json({ message: "No token provided" }, { status: 401 });
-  }
-
   try {
-    const { payload } = await jwtVerify(token, secret);
-    console.log(payload);
+    //get user id from token
+    const userId = await getIdFromToken(token);
 
-    if (typeof payload.userId !== "string") throw new Error("Invalid userId");
-
+    //add user id to the headers
     return NextResponse.next({
-      headers: { "x-user-id": payload.userId },
+      headers: { "x-user-id": userId },
     });
   } catch (error) {
     console.log(error);

@@ -61,7 +61,7 @@ export default function Login({}: Props) {
   const onSubmit = (data: any) => {
     setUserAtom((prevData) => ({ ...prevData, isLoading: true }));
     api
-      .post("user/signIn", data)
+      .post("/user/signIn", data)
       .then(
         ({ data: signInResult }) => {
           console.log(signInResult);

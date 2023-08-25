@@ -34,7 +34,7 @@ export async function dbConnect() {
   if (!cached?.promise) {
     const opts = { dbName: "courses" };
 
-    console.log(mongoose);
+    // console.log(mongoose);
 
     cached!.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;

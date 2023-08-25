@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Main } from "ui";
 
 export default function Layout({ children }: { children: React.JSX.Element }) {
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(true);
 
   return (
     <>

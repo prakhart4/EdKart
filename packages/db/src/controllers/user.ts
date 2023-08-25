@@ -1,14 +1,14 @@
-import { RequestHandler } from "express";
-// import bcrypt from "bcrypt";
-// import jwt from "jsonwebtoken";
 import { SignJWT } from "jose";
 import { user as User } from "../models/user";
 import mongoose from "mongoose";
+import { dbConnect } from "../lib/dbConnect";
 
 const secret = new TextEncoder().encode(process.env["SECRET"]!);
 
 // get user by id
 export const getUserById = async ({ userId }: { userId: string }) => {
+  await dbConnect();
+
   console.log({ userId });
   //check if user exists
   if (!userId || !mongoose.isValidObjectId(userId)) {

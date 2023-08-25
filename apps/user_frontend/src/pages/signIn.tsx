@@ -61,7 +61,7 @@ export default function Login({}: Props) {
   const onSubmit = (data: any) => {
     setUserAtom((prevData) => ({ ...prevData, isLoading: true }));
     api
-      .post("user/signIn", data)
+      .post("/user/signIn", data)
       .then(
         ({ data: signInResult }) => {
           console.log(signInResult);
@@ -93,11 +93,15 @@ export default function Login({}: Props) {
     <Container
       sx={{
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         height: "100vh",
         alignItems: "center",
       }}
     >
+      <Typography variant="h4" component="div">
+        user
+      </Typography>
       <Card
         elevation={3}
         component={"form"}

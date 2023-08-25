@@ -22,7 +22,7 @@ export function UpcomingEvents({
       </Typography>
       <Box flexGrow={1} overflow={"overlay"}>
         <Stack width={"100%"} spacing={2}>
-          {user?.purchasedCourses.map((course, index) => (
+          {user?.purchasedCourses?.map((course, index) => (
             <Paper
               key={course.title + index}
               sx={{
