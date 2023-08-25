@@ -19,7 +19,7 @@ export const authenticateJwt: RequestHandler = (req, res, next) => {
     return res.status(401).json({ message: "No token provided" });
   }
 
-  jwt.verify(token, process.env.SECRET!, (err, decoded) => {
+  jwt.verify(token, process.env["SECRET"]!, (err, decoded) => {
     if (err || !decoded || typeof decoded === "string") {
       //   console.log(err);
       return res.status(403).json({ message: "Invalid token" });
