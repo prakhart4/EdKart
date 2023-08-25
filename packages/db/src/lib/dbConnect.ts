@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env["MONGODB_URI"]!;
+const MONGODB_URI =
+  "mongodb+srv://prakhart4:5oZcu4eWxjxxdRe9@edkartcluster.3xdgrsd.mongodb.net/?retryWrites=true&w=majority"; //process.env["MONGODB_URI"]!;
 
 type globalWithMongo = typeof globalThis & {
   mongoose?: {

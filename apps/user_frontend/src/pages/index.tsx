@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { useSetRecoilState } from "recoil";
 import { userState } from "@/store/atoms/user";
-import { getIdFromToken, getUserById } from "db";
+import { getCourses, getIdFromToken, getUserById } from "db";
+import { Course, coursesState } from "@/store/atoms/course";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const token = req.cookies.token || ""; // Extract the 'token' cookie
@@ -13,9 +14,15 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   try {
     const userId = await getIdFromToken(token);
 
-    const result = await getUserById({ userId: userId });
+    const result = await getUserById({ userId }); //todo try to run them in parallel
+    const courses = await getCourses({ userId });
 
-    return { props: { user: JSON.parse(JSON.stringify(result)) } };
+    return {
+      props: {
+        user: JSON.parse(JSON.stringify(result)),
+        courses: JSON.parse(JSON.stringify(courses)),
+      },
+    };
   } catch (error) {
     console.log(error);
     return {
@@ -27,16 +34,23 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 };
 
-export default function Home({ user }: { user: any }) {
+export default function Home({
+  user,
+  courses,
+}: {
+  user: any;
+  courses: Course[];
+}) {
   const setUser = useSetRecoilState(userState);
-  // const { push } = useRouter();
+  const setCourse = useSetRecoilState(coursesState);
 
   useEffect(() => {
-    console.log("7070", user);
+    console.log("Setting user and courses: ", { user, courses });
     setUser({ user, isLoading: false });
+    setCourse({ courses, isLoading: false });
 
     return () => {};
-  }, [user]);
+  }, [user, courses, setUser, setCourse]);
 
   return <Dashboard />;
 }

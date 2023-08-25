@@ -1,5 +1,5 @@
 import { SignJWT } from "jose";
-import { user as User } from "../models/user";
+import { User } from "../models/user";
 import mongoose from "mongoose";
 import { dbConnect } from "../lib/dbConnect";
 
@@ -44,6 +44,7 @@ export const signupUser = async ({
   password: string;
   isAdmin?: boolean;
 }) => {
+  await dbConnect();
   //check if all fields are provided
   if (!email || !password) {
     throw new Error("Please provide all required fields");
@@ -96,6 +97,7 @@ export const signInUser = async ({
   password: string;
   isAdmin?: boolean;
 }) => {
+  await dbConnect();
   //check if all fields are provided
   if (!email || !password) {
     throw new Error("Please provide all required fields");

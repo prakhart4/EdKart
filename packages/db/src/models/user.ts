@@ -9,5 +9,5 @@ const userSchema = new mongoose.Schema({
   purchasedCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
 });
 
-export const user =
+export const User =
   mongoose?.models?.User || mongoose.model("User", userSchema);

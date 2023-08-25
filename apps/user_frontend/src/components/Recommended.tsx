@@ -1,25 +1,24 @@
 import { Box, CardActionArea, Paper, Stack, Typography } from "@mui/material";
 import { StyledSection } from "ui/StyledSection";
-import { Course } from "../store/atoms/course";
+import { coursesState } from "../store/atoms/course";
 import { stringToColor } from "ui";
 import { useRouter } from "next/navigation";
+import { useRecoilValue } from "recoil";
 
-export function Recommended({
-  title,
-  RecommendedCourses,
-}: {
-  title: string;
-  RecommendedCourses: Course[];
-}) {
+export function Recommended({ title }: { title: string }) {
+  const { courses: RecommendedCourses, isLoading } =
+    useRecoilValue(coursesState);
+
   const router = useRouter();
   return (
     <StyledSection sx={{ display: "flex", flexDirection: "column" }}>
       <Typography variant="h5" marginBottom={4}>
         {title}
       </Typography>
+      {isLoading && <Typography>Loading...</Typography>}
       <Box display={"flex"} flexGrow={1} overflow={"overlay"}>
         <Stack direction={"row"} spacing={2}>
-          {RecommendedCourses.map((course, index) => (
+          {RecommendedCourses?.map((course, index) => (
             <Paper
               key={course.title + index}
               sx={{

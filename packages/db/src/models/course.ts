@@ -11,5 +11,5 @@ const courseSchema = new mongoose.Schema({
   published: { type: Boolean, required: true },
 });
 
-export const course =
+export const Course =
   mongoose?.models?.Course || mongoose.model("Course", courseSchema);
