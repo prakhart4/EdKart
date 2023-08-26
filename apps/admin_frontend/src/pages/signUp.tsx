@@ -1,9 +1,9 @@
-import { userState } from "store";
-import axios, { AxiosError, AxiosInstance } from "axios";
+import { userLoadingState, userState } from "store";
+import { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import Cookies from "js-cookie";
 import {
   Box,
@@ -24,7 +24,8 @@ type Props = {};
 
 export default function SignUp({}: Props) {
   const [showPassword, setShowPassword] = React.useState(false);
-  const [userAtom, setUserAtom] = useRecoilState(userState);
+  const loading = useRecoilValue(userLoadingState);
+  const setUserAtom = useSetRecoilState(userState);
   const { push } = useRouter();
   const {
     reset,
@@ -40,18 +41,18 @@ export default function SignUp({}: Props) {
     },
   });
 
-  useEffect(() => {
-    if (userAtom?.isLoading) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (userAtom?.isLoading) {
+  //     return;
+  //   }
 
-    console.log("userAtom", userAtom);
-    if (userAtom?.user?.email) {
-      push("/");
-    }
+  //   console.log("userAtom", userAtom);
+  //   if (userAtom?.user?.email) {
+  //     push("/");
+  //   }
 
-    return () => {};
-  }, [userAtom]);
+  //   return () => {};
+  // }, [userAtom]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -72,7 +73,7 @@ export default function SignUp({}: Props) {
           setUserAtom({ user, isLoading: false });
 
           //redirect to home page
-          // push("/");
+          push("/");
         },
         (errors: AxiosError<{ message: string }>) => {
           alert(errors?.response?.data?.message);
@@ -168,7 +169,7 @@ export default function SignUp({}: Props) {
         <br />
         <CardActions>
           <LoadingButton
-            loading={userAtom.isLoading}
+            loading={loading}
             loadingPosition="start"
             startIcon={<></>}
             type="submit"
