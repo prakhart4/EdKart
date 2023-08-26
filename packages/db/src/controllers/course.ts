@@ -1,4 +1,3 @@
-import { RequestHandler } from "express";
 import mongoose from "mongoose";
 import { Course } from "../models/course";
 import { User } from "../models/user";
