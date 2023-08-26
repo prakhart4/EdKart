@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { signInUser } from "db";
+import { signupUser } from "db";
 
 type Data = {
   user?: any;
@@ -16,10 +16,11 @@ export default async function handler(
   switch (method) {
     case "POST":
       try {
-        const result = await signInUser({
+        const result = await signupUser({
+          name: body.name,
           email: body.email,
           password: body.password,
-          isAdmin: false, // false for user_frontend api
+          isAdmin: true, // true for admin_frontend api
         });
         console.log(result);
         res.status(200).json(result);

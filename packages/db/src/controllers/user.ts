@@ -154,8 +154,8 @@ export const signInUser = async ({
 
     //return token
     return { user: userRest, token };
-  } catch (error) {
+  } catch (error: any) {
     //return error
-    throw { message: "Login failed", error };
+    throw { message: error?.message ?? "SignIn failed", error: error };
   }
 };

@@ -5,6 +5,7 @@ type Data = {
   user?: any;
   token?: string;
   error?: any;
+  message?: string;
 };
 
 export default async function handler(
@@ -19,13 +20,19 @@ export default async function handler(
         const result = await signInUser({
           email: body.email,
           password: body.password,
-          isAdmin: false, // false for user_frontend api
+          isAdmin: true, // true for admin_frontend api
         });
-        console.log(result);
+        console.log("from api/user/signIn try", result);
         res.status(200).json(result);
-      } catch (error) {
-        console.log(error);
-        res.status(400).json({ error });
+      } catch (error: any) {
+        console.log("from api/user/signIn catch", error.error.message);
+        res.status(400).json(
+          error
+          // {
+          //   message: error.message,
+          //   error: { message: error.error.message },
+          // }
+        );
       }
       break;
     default:

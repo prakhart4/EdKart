@@ -20,7 +20,7 @@ export default async function handler(
           name: body.name,
           email: body.email,
           password: body.password,
-          isAdmin: body.isAdmin,
+          isAdmin: false, // false for user_frontend api
         });
         console.log(result);
         res.status(200).json(result);

@@ -75,8 +75,13 @@ export default function Login({}: Props) {
           //redirect to home page
           // push("/");
         },
-        (errors: AxiosError<{ message: string }>) => {
-          alert(errors?.response?.data?.message);
+        (
+          errors: AxiosError<{ message: string; error: { message: string } }>
+        ) => {
+          alert(
+            errors?.response?.data?.error?.message ??
+              errors?.response?.data?.message
+          );
           console.error(errors?.response?.data?.message);
         }
       )
