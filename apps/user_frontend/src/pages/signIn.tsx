@@ -18,14 +18,16 @@ import { AxiosError } from "axios";
 import React, { use, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { userState } from "store";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { api } from "@/util/api";
+import { userLoadingState } from "store";
 
 type Props = {};
 
 export default function Login({}: Props) {
   const [showPassword, setShowPassword] = React.useState(false);
-  const [userAtom, setUserAtom] = useRecoilState(userState);
+  const loading = useRecoilValue(userLoadingState);
+  const setUserAtom = useSetRecoilState(userState);
   const { push } = useRouter();
   const {
     reset,
@@ -40,19 +42,6 @@ export default function Login({}: Props) {
       password: "",
     },
   });
-
-  useEffect(() => {
-    if (userAtom?.isLoading) {
-      return;
-    }
-
-    console.log("userAtom", userAtom);
-    if (userAtom?.user?.email) {
-      push("/");
-    }
-
-    return () => {};
-  }, [userAtom]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -73,11 +62,12 @@ export default function Login({}: Props) {
           setUserAtom({ user, isLoading: false });
 
           //redirect to home page
-          // push("/");
+          push("/");
         },
         (errors: AxiosError<{ message: string }>) => {
           alert(errors?.response?.data?.message);
           console.error(errors?.response?.data?.message);
+          setUserAtom({ user: null, isLoading: false });
         }
       )
       .finally(() =>
@@ -173,7 +163,7 @@ export default function Login({}: Props) {
         <br />
         <CardActions>
           <LoadingButton
-            loading={userAtom.isLoading}
+            loading={loading}
             loadingPosition="start"
             startIcon={<></>}
             type="submit"
