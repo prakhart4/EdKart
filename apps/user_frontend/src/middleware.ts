@@ -1,4 +1,4 @@
-import { getIdFromToken } from "db";
+import { getIdFromToken } from "utils";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 

@@ -31,7 +31,8 @@
     "react-hook-form": "^7.45.4",
     "recoil": "^0.7.7",
     "typescript": "5.1.6",
-    "ui": "*"
+    "ui": "*",
+    "utils": "*"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.3"

@@ -1,5 +1,4 @@
 import { jwtVerify } from "jose";
-// import mongoose from "mongoose";
 
 const secret = new TextEncoder().encode(process.env["SECRET"]!);
 

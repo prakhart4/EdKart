@@ -3,8 +3,9 @@ import { useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { useSetRecoilState } from "recoil";
 import { userState } from "@/store/atoms/user";
-import { getCourses, getIdFromToken, getUserById } from "db";
+import { getCourses, getUserById } from "db";
 import { Course, coursesState } from "@/store/atoms/course";
+import { getIdFromToken } from "utils";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const token = req.cookies.token || ""; // Extract the 'token' cookie
