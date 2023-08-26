@@ -5,7 +5,11 @@ import { dbConnect } from "../lib/dbConnect";
 
 const secret = new TextEncoder().encode(process.env["SECRET"]!);
 
-// get user by id
+/**
+ * Get user data along with purchased courses by user ID
+ * @param userId user's _id in string form
+ * @returns User object, excluding password field
+ */
 export const getUserById = async ({ userId }: { userId: string }) => {
   await dbConnect();
 
@@ -32,7 +36,14 @@ export const getUserById = async ({ userId }: { userId: string }) => {
   return rest;
 };
 
-// signup
+/**
+ * SignUp a user
+ * @param name Name of the user, uniqueness is not required
+ * @param email Email address of the user, should be unique per user
+ * @param password Password of the user
+ * @param isAdmin Whether the user is an admin or not
+ * @returns user object and JWT token
+ */
 export const signupUser = async ({
   name,
   email,
@@ -71,6 +82,7 @@ export const signupUser = async ({
 
     //generate a JWT
     const token = await new SignJWT({ userId: user._id })
+      .setProtectedHeader({ alg: "HS256" })
       .setExpirationTime("2d")
       .sign(secret);
 
@@ -87,7 +99,13 @@ export const signupUser = async ({
   }
 };
 
-//signIn
+/**
+ * SignIn a user, both admin or not
+ * @param email Email address of the user
+ * @param password Password of the user
+ * @param isAdmin Whether the user is an admin or not
+ * @returns user object and JWT token
+ */
 export const signInUser = async ({
   email,
   password,
@@ -127,6 +145,7 @@ export const signInUser = async ({
 
     //generate a JWT
     const token = await new SignJWT({ userId: user._id })
+      .setProtectedHeader({ alg: "HS256" })
       .setExpirationTime("2d")
       .sign(secret);
 

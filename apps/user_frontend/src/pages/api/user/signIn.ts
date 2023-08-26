@@ -16,12 +16,11 @@ export default async function handler(
   switch (method) {
     case "POST":
       try {
-        const result = {};
-        // await signInUser({
-        //   email: body.email,
-        //   password: body.password,
-        //   isAdmin: body.isAdmin,
-        // });
+        const result = await signInUser({
+          email: body.email,
+          password: body.password,
+          isAdmin: body.isAdmin,
+        });
         console.log(result);
         res.status(200).json(result);
       } catch (error) {

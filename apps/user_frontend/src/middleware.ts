@@ -3,9 +3,13 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export async function middleware(req: NextRequest) {
+  console.log("middleware path log:", {
+    method: req.method,
+    path: req.nextUrl.pathname,
+  });
   if (
-    req.nextUrl.pathname.startsWith("/api/signIn") ||
-    req.nextUrl.pathname.startsWith("/api/signUp")
+    req.nextUrl.pathname.startsWith("/api/user/signIn") ||
+    req.nextUrl.pathname.startsWith("/api/user/signUp")
   ) {
     return NextResponse.next();
   }
