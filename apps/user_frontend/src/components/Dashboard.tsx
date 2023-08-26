@@ -1,11 +1,5 @@
-import { Main } from "ui";
-import { Box, Container, Stack, Toolbar } from "@mui/material";
-import { useEffect } from "react";
-import { api } from "@/util/api";
-import { useRecoilState } from "recoil";
-import { coursesState } from "@/store/atoms/course";
+import { Box, Container, Stack } from "@mui/material";
 import { UpcomingEvents } from "./UpcomingEvents";
-import { UserProgress } from "./UserProgress";
 import { Recommended } from "./Recommended";
 import { WelcomeBar } from "./WelcomeBar";
 

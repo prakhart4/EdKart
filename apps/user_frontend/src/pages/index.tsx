@@ -2,9 +2,9 @@ import Dashboard from "@/components/Dashboard";
 import { useEffect } from "react";
 import { GetServerSideProps } from "next";
 import { useSetRecoilState } from "recoil";
-import { userState } from "@/store/atoms/user";
+import { userState } from "store";
 import { getCourses, getUserById } from "db";
-import { Course, coursesState } from "@/store/atoms/course";
+import { Course, coursesState } from "store";
 import { getIdFromToken } from "utils";
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {

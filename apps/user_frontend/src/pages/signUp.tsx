@@ -1,4 +1,4 @@
-import { userState } from "@/store/atoms/user";
+import { userState } from "store";
 import axios, { AxiosError, AxiosInstance } from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";

@@ -1,7 +1,5 @@
-import { AppBarComponent } from "@/components/AppBarComponent";
-import { DrawerComponent } from "@/components/DrawerComponent";
-import { Course, coursesState } from "@/store/atoms/course";
-import { userState } from "@/store/atoms/user";
+import { Course, coursesState } from "store";
+import { userState } from "store";
 import { api } from "@/util/api";
 import { ArrowBack, VideoCall } from "@mui/icons-material";
 import {

@@ -1,6 +1,5 @@
 import { atom } from "recoil";
 import { Course } from "./course";
-import ObjectID from "bson-objectid";
 
 export interface User {
   name: String;

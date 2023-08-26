@@ -1,4 +1,4 @@
-import { Course, coursesState } from "@/store/atoms/course";
+import { Course, coursesState } from "store";
 import { api } from "@/util/api";
 import { ArrowBack, VideoCall } from "@mui/icons-material";
 import {

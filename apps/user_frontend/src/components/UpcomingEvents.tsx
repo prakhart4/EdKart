@@ -1,8 +1,7 @@
 import { Box, CardActionArea, Paper, Stack, Typography } from "@mui/material";
 import { StyledSection } from "ui/StyledSection";
-import { Course } from "../store/atoms/course";
 import { useRecoilValue } from "recoil";
-import { userState } from "@/store/atoms/user";
+import { userState } from "store";
 import { stringToColor } from "ui";
 import { useRouter } from "next/navigation";
 
