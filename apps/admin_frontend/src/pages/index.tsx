@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/navigation";
-import { userState } from "@/store/atoms/user";
+import { userState } from "store";
 import Dashboard from "@/components/Dashboard";
 import { getIdFromToken } from "utils";
 import { getUserById } from "db";

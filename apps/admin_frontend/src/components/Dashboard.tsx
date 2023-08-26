@@ -15,7 +15,7 @@ import {
 import { useEffect, useState } from "react";
 // import { api } from "@/util/api";
 import { useRecoilState } from "recoil";
-import { Course, coursesState } from "@/store/atoms/course";
+import { Course, coursesState } from "store";
 // import { UpcomingEvents } from "./UpcomingEvents";
 // import { UserProgress } from "./UserProgress";
 // import { Recommended } from "./Recommended";

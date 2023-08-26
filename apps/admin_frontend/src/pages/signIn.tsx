@@ -17,7 +17,7 @@ import {
 import axios, { AxiosError, AxiosInstance } from "axios";
 import React, { use, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { userState } from "@/store/atoms/user";
+import { userState } from "store";
 import { useRecoilState } from "recoil";
 import { api } from "@/util/api";
 

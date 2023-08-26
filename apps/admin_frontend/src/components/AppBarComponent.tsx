@@ -11,7 +11,7 @@ import React from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
-import { userState } from "@/store/atoms/user";
+import { userState } from "store";
 
 export function AppBarComponent({
   title,
