@@ -47,7 +47,7 @@ export default function CoursePage({}) {
         (response) => {
           console.log(response);
           if (response.status === 200) {
-            setCourse(response.data.course);
+            setCourse(response.data.courses);
           } else {
             setCourse(undefined);
           }
@@ -91,7 +91,7 @@ export default function CoursePage({}) {
   const handleRemoveCourse = () => {
     setIsLoading(true);
     api
-      .post(`/course/remove/${router.query.courseId}`)
+      .delete(`/course/purchase/${router.query.courseId}`)
       .then(
         (response) => {
           console.log(response);
