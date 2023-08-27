@@ -11,6 +11,10 @@ export default function Courses({}: Props) {
   const [coursesAtom, setCoursesAtom] = useRecoilState(coursesState);
 
   useEffect(() => {
+    setCoursesAtom((prevAtom) => ({
+      isLoading: true,
+      courses: prevAtom.courses,
+    }));
     api
       .get("/course")
       .then(
@@ -22,10 +26,14 @@ export default function Courses({}: Props) {
         },
         (error) => {
           console.log(error);
+          setCoursesAtom({ isLoading: false, courses: null });
         }
       )
       .finally(() => {
-        console.log("finally");
+        setCoursesAtom((prevAtom) => ({
+          isLoading: false,
+          courses: prevAtom.courses,
+        }));
       });
   }, [setCoursesAtom]);
 

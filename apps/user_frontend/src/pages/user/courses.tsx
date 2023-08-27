@@ -12,6 +12,7 @@ export default function UserCourses({}: Props) {
   const setUserAtom = useSetRecoilState(userState);
 
   useEffect(() => {
+    setUserAtom((prevAtom) => ({ isLoading: true, user: prevAtom.user }));
     api
       .get("/user")
       .then(
@@ -23,10 +24,14 @@ export default function UserCourses({}: Props) {
         },
         (error) => {
           console.log(error);
+          setUserAtom({ isLoading: false, user: null });
         }
       )
       .finally(() => {
-        console.log("finally");
+        setUserAtom((prevAtom) => ({
+          isLoading: false,
+          user: prevAtom.user,
+        }));
       });
   }, [setUserAtom]);
 

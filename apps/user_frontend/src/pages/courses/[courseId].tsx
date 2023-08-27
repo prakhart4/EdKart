@@ -40,6 +40,10 @@ export default function CoursePage({}) {
       ...prevAtom,
       isLoading: true,
     }));
+    setCourseAtom((prevAtom) => ({
+      isLoading: true,
+      courses: prevAtom.courses,
+    }));
     api
       .get(`/course/${router.query.courseId}`)
       .then(
