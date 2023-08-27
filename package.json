@@ -1,17 +1,18 @@
 {
   "private": true,
   "scripts": {
-    "build": "turbo run build",
+    "build": "dotenv -- turbo run build",
     "dev": "dotenv -- turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "@turbo/gen": "^1.9.7",
+    "dotenv-cli": "^7.3.0",
     "eslint": "^7.32.0",
     "eslint-config-custom": "*",
     "prettier": "^2.5.1",
-    "turbo": "latest"
+    "turbo": "^1.10.13"
   },
   "name": "EdKart.co",
   "packageManager": "npm@9.6.7",

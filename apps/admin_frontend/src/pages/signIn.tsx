@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import {
   Card,
-  CardActionArea,
   CardActions,
   CardContent,
   Container,
@@ -14,18 +13,19 @@ import {
   IconButton,
   Box,
 } from "@mui/material";
-import axios, { AxiosError, AxiosInstance } from "axios";
-import React, { use, useEffect } from "react";
+import { AxiosError } from "axios";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { userState } from "@/store/atoms/user";
-import { useRecoilState } from "recoil";
+import { userLoadingState, userState } from "store";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { api } from "@/util/api";
 
 type Props = {};
 
 export default function Login({}: Props) {
   const [showPassword, setShowPassword] = React.useState(false);
-  const [userAtom, setUserAtom] = useRecoilState(userState);
+  const loading = useRecoilValue(userLoadingState);
+  const setUserAtom = useSetRecoilState(userState);
   const { push } = useRouter();
   const {
     reset,
@@ -41,18 +41,18 @@ export default function Login({}: Props) {
     },
   });
 
-  useEffect(() => {
-    if (userAtom?.isLoading) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (userAtom?.isLoading) {
+  //     return;
+  //   }
 
-    console.log("userAtom", userAtom);
-    if (userAtom?.user?.email) {
-      push("/");
-    }
+  //   console.log("userAtom", userAtom);
+  //   if (userAtom?.user?.email) {
+  //     push("/");
+  //   }
 
-    return () => {};
-  }, [userAtom]);
+  //   return () => {};
+  // }, [userAtom]);
 
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -61,7 +61,7 @@ export default function Login({}: Props) {
   const onSubmit = (data: any) => {
     setUserAtom((prevData) => ({ ...prevData, isLoading: true }));
     api
-      .post("user/signIn", data)
+      .post("/user/signIn", data)
       .then(
         ({ data: signInResult }) => {
           console.log(signInResult);
@@ -73,10 +73,15 @@ export default function Login({}: Props) {
           setUserAtom({ user, isLoading: false });
 
           //redirect to home page
-          // push("/");
+          push("/");
         },
-        (errors: AxiosError<{ message: string }>) => {
-          alert(errors?.response?.data?.message);
+        (
+          errors: AxiosError<{ message: string; error: { message: string } }>
+        ) => {
+          alert(
+            errors?.response?.data?.error?.message ??
+              errors?.response?.data?.message
+          );
           console.error(errors?.response?.data?.message);
         }
       )
@@ -169,7 +174,7 @@ export default function Login({}: Props) {
         <br />
         <CardActions>
           <LoadingButton
-            loading={userAtom.isLoading}
+            loading={loading}
             loadingPosition="start"
             startIcon={<></>}
             type="submit"

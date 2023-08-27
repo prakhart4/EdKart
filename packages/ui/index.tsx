@@ -7,3 +7,4 @@ export * from "./QontoConnector";
 export * from "./stringToColor";
 export * from "./StyledSection";
 export * from "./QontoStepIcon";
+export * from "./CourseCard";

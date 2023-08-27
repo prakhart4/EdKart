@@ -1,70 +1,31 @@
-// import { Inter } from "next/font/google";
 import Dashboard from "@/components/Dashboard";
-import { useEffect, useState } from "react";
-import { AppBarComponent } from "@/components/AppBarComponent";
-import { DrawerComponent } from "@/components/DrawerComponent";
-// import { CssBaseline } from "@mui/material";
+import { useEffect } from "react";
 import { GetServerSideProps } from "next";
-import { parse } from "cookie";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { useRouter } from "next/navigation";
-import { userLoggedInState } from "@/store/selectors/isUserLoggedIn";
-import { userLoadingState } from "@/store/selectors/isUserLoading";
-import { userState } from "@/store/atoms/user";
+import { useSetRecoilState } from "recoil";
+import { userState } from "store";
+import { getCourses, getUserById } from "db";
+import { Course, coursesState } from "store";
+import { getIdFromToken } from "utils";
 
-// const inter = Inter({ subsets: ["latin"] });
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const token = req.cookies.token || ""; // Extract the 'token' cookie
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = parse(context.req.headers.cookie || ""); // Parse cookies from the request headers
-  const token = cookies.token || ""; // Extract the 'token' cookie
+  // console.log("token=====", token);
 
-  //check for token
-  if (!token) {
-    return {
-      redirect: {
-        destination: "/signIn", // Redirect to the signIn page
-        permanent: false,
-      },
-    };
-  }
+  try {
+    const userId = await getIdFromToken(token);
 
-  //fetch user data from the backend
-  const res = await fetch(
-    `${process.env["NEXT_PUBLIC_BACKEND_URL"]}/api/user`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+    const result = await getUserById({ userId }); //todo try to run them in parallel
+    const courses = await getCourses({ userId });
 
-  //check for status ok
-  if (!res.ok) {
-    return {
-      redirect: {
-        destination: "/signIn", // Redirect to the signIn page
-        permanent: false,
-      },
-    };
-  }
-
-  //Get the user data from the response body
-  const user = await res.json();
-
-  // Check if the token exists and is valid (you might want to implement your own validation logic)
-  if (user) {
-    // User is logged in
-
-    //return the user data to the client
     return {
       props: {
-        user,
+        user: JSON.parse(JSON.stringify(result)),
+        courses: JSON.parse(JSON.stringify(courses)),
       },
     };
-  } else {
-    // User is not logged in, redirect to a signIn page
+  } catch (error) {
+    console.log(error);
     return {
       redirect: {
         destination: "/signIn", // Redirect to the signIn page
@@ -74,17 +35,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 };
 
-export default function Home({ user }: { user: any }) {
-  const [open, setOpen] = useState(true);
+export default function Home({
+  user,
+  courses,
+}: {
+  user: any;
+  courses: Course[];
+}) {
   const setUser = useSetRecoilState(userState);
-  // const { push } = useRouter();
+  const setCourse = useSetRecoilState(coursesState);
 
   useEffect(() => {
-    console.log(user);
+    console.log("Setting user and courses: ", { user, courses });
     setUser({ user, isLoading: false });
+    setCourse({ courses, isLoading: false });
 
     return () => {};
-  }, [user]);
+  }, [user, courses, setUser, setCourse]);
 
   return <Dashboard />;
 }

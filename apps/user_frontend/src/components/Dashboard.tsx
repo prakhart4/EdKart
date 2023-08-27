@@ -1,11 +1,5 @@
-import { Main } from "ui";
-import { Box, Container, Stack, Toolbar } from "@mui/material";
-import { useEffect } from "react";
-import { api } from "@/util/api";
-import { useRecoilState } from "recoil";
-import { coursesState } from "@/store/atoms/course";
+import { Box, Container, Stack } from "@mui/material";
 import { UpcomingEvents } from "./UpcomingEvents";
-import { UserProgress } from "./UserProgress";
 import { Recommended } from "./Recommended";
 import { WelcomeBar } from "./WelcomeBar";
 
@@ -14,34 +8,34 @@ const steps = ["Purchased course", "completionPercent", "Certified"];
 type Props = {};
 
 export default function Dashboard({}: Props) {
-  const [course, setCourse] = useRecoilState(coursesState);
+  // const [course, setCourse] = useRecoilState(coursesState);
 
-  //fetch courses from backend
-  useEffect(() => {
-    setCourse((course) => ({
-      isLoading: true,
-      courses: course?.courses,
-    }));
-    api
-      .get("/course")
-      .then(
-        (res) => {
-          console.log(res);
-          setCourse({ isLoading: false, courses: res.data.courses });
-        },
-        (err) => {
-          // alert(err);
-          setCourse({ isLoading: false, courses: null });
-          console.error(err);
-        }
-      )
-      .finally(() => {
-        setCourse((course) => ({ isLoading: false, courses: course.courses }));
-      });
+  // //fetch courses from backend
+  // useEffect(() => {
+  //   setCourse((course) => ({
+  //     isLoading: true,
+  //     courses: course?.courses,
+  //   }));
+  //   api
+  //     .get("/course")
+  //     .then(
+  //       (res) => {
+  //         console.log(res);
+  //         setCourse({ isLoading: false, courses: res.data.courses });
+  //       },
+  //       (err) => {
+  //         // alert(err);
+  //         setCourse({ isLoading: false, courses: null });
+  //         console.error(err);
+  //       }
+  //     )
+  //     .finally(() => {
+  //       setCourse((course) => ({ isLoading: false, courses: course.courses }));
+  //     });
 
-    return () => {};
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   return () => {};
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   return (
     <>
@@ -56,10 +50,10 @@ export default function Dashboard({}: Props) {
           >
             <Recommended
               title="New courses for you"
-              RecommendedCourses={
-                course.courses ?? []
-                // Array(5).fill({ name: "course" })
-              }
+              // RecommendedCourses={
+              //   course.courses ?? []
+              //   // Array(5).fill({ name: "course" })
+              // }
             />
           </Box>
           <Box
