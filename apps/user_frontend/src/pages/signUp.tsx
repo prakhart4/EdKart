@@ -1,7 +1,7 @@
 import { userLoadingState, userLoggedInState, userState } from "store";
 import axios, { AxiosError, AxiosInstance } from "axios";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import Cookies from "js-cookie";
@@ -19,6 +19,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { api } from "@/util/api";
+import Router from "next/router";
 
 type Props = {};
 
@@ -40,6 +41,21 @@ export default function SignUp({}: Props) {
       email: "",
       password: "",
     },
+  });
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  Router.events.on("routeChangeStart", () => {
+    setIsLoading(true);
+    console.log("routeChangeStart");
+  });
+  Router.events.on("routeChangeComplete", () => {
+    setIsLoading(false);
+    console.log("routeChangeComplete");
+  });
+  Router.events.on("routeChangeError", () => {
+    setIsLoading(false);
+    console.log("routeChangeError");
   });
 
   // useEffect(() => {
@@ -170,7 +186,7 @@ export default function SignUp({}: Props) {
         <br />
         <CardActions>
           <LoadingButton
-            loading={loading}
+            loading={loading || isLoading}
             disabled={isLoggedIn || loading}
             loadingPosition="start"
             startIcon={<></>}

@@ -15,12 +15,13 @@ import {
   Box,
 } from "@mui/material";
 import { AxiosError } from "axios";
-import React, { use, useEffect } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { userLoggedInState, userState } from "store";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { api } from "@/util/api";
 import { userLoadingState } from "store";
+import Router from "next/router";
 
 type Props = {};
 
@@ -42,6 +43,20 @@ export default function Login({}: Props) {
       email: "",
       password: "",
     },
+  });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  Router.events.on("routeChangeStart", () => {
+    setIsLoading(true);
+    console.log("routeChangeStart");
+  });
+  Router.events.on("routeChangeComplete", () => {
+    setIsLoading(false);
+    console.log("routeChangeComplete");
+  });
+  Router.events.on("routeChangeError", () => {
+    setIsLoading(false);
+    console.log("routeChangeError");
   });
 
   const handleClickShowPassword = () => {
@@ -164,7 +179,7 @@ export default function Login({}: Props) {
         <br />
         <CardActions>
           <LoadingButton
-            loading={loading}
+            loading={loading || isLoading}
             disabled={isLoggedIn || loading}
             loadingPosition="start"
             startIcon={<></>}
