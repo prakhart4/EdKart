@@ -14,7 +14,7 @@ export const coursesState = atom<{
 }>({
   key: "coursesState",
   default: {
-    isLoading: true,
+    isLoading: false,
     courses: null,
   },
 });

@@ -30,9 +30,10 @@ export function UpcomingEvents({
       </Typography>
       <Box flexGrow={1} overflow={"overlay"}>
         <Stack width={"100%"} spacing={2}>
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
+          {
+            // isLoading ? (
+            //   <CircularProgress />
+            // ) : (
             purchasedCourses?.map((course, index) => (
               <Paper
                 key={course.title + index}
@@ -63,7 +64,8 @@ export function UpcomingEvents({
                 </CardActionArea>
               </Paper>
             ))
-          )}
+            // )
+          }
         </Stack>
       </Box>
     </StyledSection>

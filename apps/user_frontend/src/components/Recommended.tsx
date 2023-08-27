@@ -26,9 +26,10 @@ export function Recommended({ title }: { title: string }) {
 
       <Box display={"flex"} flexGrow={1} overflow={"overlay"}>
         <Stack direction={"row"} spacing={2}>
-          {isLoading ? (
-            <CircularProgress />
-          ) : (
+          {
+            // isLoading ? (
+            //   <CircularProgress />
+            // ) : (
             RecommendedCourses?.filter(
               (course) =>
                 !purchasedCourses?.map((pc) => pc._id).includes(course._id)
@@ -76,7 +77,8 @@ export function Recommended({ title }: { title: string }) {
                 </CardActionArea>
               </Paper>
             ))
-          )}
+            // )
+          }
         </Stack>
       </Box>
     </StyledSection>
