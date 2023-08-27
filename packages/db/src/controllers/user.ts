@@ -126,7 +126,7 @@ export const signInUser = async ({
     const result = await User.findOne({
       email,
       isAdmin,
-    });
+    }).populate("purchasedCourses");
 
     const user = result?.toJSON();
 
