@@ -5,11 +5,26 @@ import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { coursesLoadingState, userLoadingState } from "store";
 import { Main } from "ui";
+import Router from "next/router";
 
 export default function Layout({ children }: { children: React.JSX.Element }) {
   const [open, setOpen] = useState<boolean>(true);
   const isUserLoading = useRecoilValue(userLoadingState);
   const isCoursesLoading = useRecoilValue(coursesLoadingState);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  Router.events.on("routeChangeStart", () => {
+    setIsLoading(true);
+    console.log("routeChangeStart");
+  });
+  Router.events.on("routeChangeComplete", () => {
+    setIsLoading(false);
+    console.log("routeChangeComplete");
+  });
+  Router.events.on("routeChangeError", () => {
+    setIsLoading(false);
+    console.log("routeChangeError");
+  });
 
   return (
     <>
@@ -17,7 +32,7 @@ export default function Layout({ children }: { children: React.JSX.Element }) {
       <DrawerComponent open={open} />
       <Main open={open}>
         <Toolbar />
-        {(isUserLoading || isCoursesLoading) && (
+        {(isLoading || isUserLoading || isCoursesLoading) && (
           <Box position={"relative"}>
             <LinearProgress
               sx={{ position: "absolute", top: 0, left: 0, right: 0 }}
