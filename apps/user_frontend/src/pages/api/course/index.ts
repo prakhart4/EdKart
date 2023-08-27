@@ -2,7 +2,7 @@ import { createCourse, getCourses } from "db";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
-  data?: any;
+  courses?: any;
   success: boolean;
   message?: string;
 };
@@ -22,7 +22,7 @@ export default async function handler(
           userId,
         });
         console.log(courses);
-        res.status(200).json({ success: true, data: courses });
+        res.status(200).json({ success: true, courses });
       } catch (error) {
         console.log(error);
         res.status(400).json({ success: false });
@@ -38,7 +38,7 @@ export default async function handler(
           userId,
         });
         console.log(courses);
-        res.status(200).json({ success: true, data: courses });
+        res.status(200).json({ success: true, courses });
       } catch (error: any) {
         console.log(error);
         res.status(400).json({ success: false, message: error });

@@ -4,7 +4,7 @@ import { User } from "../models/user";
 import { dbConnect } from "../lib/dbConnect";
 
 /**
- * Get recommended courses for a user, i.e. courses that user has not purchased
+ * Get recommended courses for a user, i.e. currently all published courses
  * @param userId user's _id in string form
  * @returns array of courses
  */
@@ -15,9 +15,10 @@ export const getCourses = async ({ userId }: { userId: string }) => {
   if (courses) {
     const user = await User.findOne({ _id: userId });
     if (user) {
-      const recommendedCourses = courses.filter(
-        (course) => !user.purchasedCourses.includes(course._id)
-      );
+      const recommendedCourses = courses; //Todo recommendation
+      // .filter(
+      //   (course) => !user.purchasedCourses.includes(course._id)
+      // );
       console.log(recommendedCourses);
       return recommendedCourses;
     } else {

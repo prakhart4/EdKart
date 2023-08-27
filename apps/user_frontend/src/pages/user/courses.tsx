@@ -1,4 +1,4 @@
-import { coursesState } from "store";
+import { userState } from "store";
 import { api } from "@/util/api";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect } from "react";
@@ -7,18 +7,18 @@ import { CourseCard } from "ui";
 
 type Props = {};
 
-export default function Courses({}: Props) {
-  const [coursesAtom, setCoursesAtom] = useRecoilState(coursesState);
+export default function UserCourses({}: Props) {
+  const [userAtom, setUserAtom] = useRecoilState(userState);
 
   useEffect(() => {
     api
-      .get("/course")
+      .get("/user")
       .then(
         (res) => {
           console.log(res);
 
           if (res.status === 200)
-            setCoursesAtom({ isLoading: false, courses: res.data.courses });
+            setUserAtom({ isLoading: false, user: res.data.user });
         },
         (error) => {
           console.log(error);
@@ -27,7 +27,7 @@ export default function Courses({}: Props) {
       .finally(() => {
         console.log("finally");
       });
-  }, [setCoursesAtom]);
+  }, [setUserAtom]);
 
   return (
     <Container>
@@ -36,16 +36,20 @@ export default function Courses({}: Props) {
           <ArrowBack />
         </IconButton> */}
         <Typography variant="h4" margin={2}>
-          All Courses
+          My Courses
         </Typography>
       </Box>
       <Grid padding={2} container>
-        {coursesAtom.courses?.map((course, index) => (
-          <CourseCard course={course} key={course.title + index} />
+        {userAtom.user?.purchasedCourses?.map((course, index) => (
+          <CourseCard
+            course={course}
+            key={course.title + index}
+            showPrice={false}
+          />
         ))}
       </Grid>
     </Container>
   );
 }
 
-Courses.getLayout = true;
+UserCourses.getLayout = true;

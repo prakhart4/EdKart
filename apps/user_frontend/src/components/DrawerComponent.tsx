@@ -13,6 +13,8 @@ import { drawerWidth } from "ui";
 import {
   EditCalendar,
   People,
+  Person,
+  Person2,
   SpaceDashboard,
   TravelExplore,
 } from "@mui/icons-material";
@@ -20,8 +22,8 @@ import { useRouter } from "next/navigation";
 
 const tabs = [
   { label: "Dashboard", icon: <SpaceDashboard />, route: "/" },
-  { label: "Discover", icon: <TravelExplore />, route: "/courses" },
-  { label: "Calendar", icon: <EditCalendar />, route: "/calendar" },
+  { label: "All Courses", icon: <TravelExplore />, route: "/courses" },
+  { label: "My Courses", icon: <Person />, route: "/user/courses" },
   { label: "Community", icon: <People />, route: "/community" },
 ];
 

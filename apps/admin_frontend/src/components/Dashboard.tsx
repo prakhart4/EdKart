@@ -1,30 +1,19 @@
-import { Main } from "ui";
 import {
-  Box,
   Button,
   Card,
   CardActions,
   CardContent,
-  CardHeader,
   Container,
-  Stack,
   TextField,
-  Toolbar,
   Typography,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-// import { api } from "@/util/api";
-import { useRecoilState } from "recoil";
-import { Course, coursesState } from "store";
-// import { UpcomingEvents } from "./UpcomingEvents";
-// import { UserProgress } from "./UserProgress";
-// import { Recommended } from "./Recommended";
+import { useState } from "react";
+import { Course } from "store";
 import { WelcomeBar } from "./WelcomeBar";
 import { useForm } from "react-hook-form";
 import { api } from "@/util/api";
-import { error } from "console";
 
-const steps = ["Purchased course", "completionPercent", "Certified"];
+// const steps = ["Purchased course", "completionPercent", "Certified"];
 
 type Props = {};
 
@@ -82,7 +71,6 @@ export default function Dashboard({}: Props) {
             <Typography variant="h6" component="div">
               Create a course
             </Typography>
-            {/* <br /> */}
             <TextField
               error={Boolean(errors?.title)}
               helperText={errors?.title?.type}

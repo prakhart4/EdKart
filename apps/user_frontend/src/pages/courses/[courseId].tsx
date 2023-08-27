@@ -1,4 +1,4 @@
-import { Course, coursesState } from "store";
+import { coursesState } from "store";
 import { userState } from "store";
 import { api } from "@/util/api";
 import { ArrowBack, VideoCall } from "@mui/icons-material";
@@ -8,29 +8,26 @@ import {
   Button,
   Container,
   IconButton,
-  Toolbar,
   Typography,
 } from "@mui/material";
 import ObjectID from "bson-objectid";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useState } from "react";
-import { useRecoilValue } from "recoil";
-import { Main } from "ui";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 export default function CoursePage({}) {
   const router = useRouter();
   const userAtom = useRecoilValue(userState);
-  const courseAtom = useRecoilValue(coursesState);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [courseAtom, setCourseAtom] = useRecoilState(coursesState);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const localCourse = useMemo(
+  const course = useMemo(
     () =>
       courseAtom.courses?.find(
         (c) => c._id.toString() === router.query.courseId?.toString()
       ),
     [router.query.courseId, courseAtom.courses]
   );
-  const [course, setCourse] = useState<Course | undefined>(localCourse);
 
   useEffect(() => {
     //check if valid objectid
@@ -40,16 +37,31 @@ export default function CoursePage({}) {
     )
       return;
 
-    setIsLoading(true);
+    setCourseAtom((prevAtom) => ({
+      ...prevAtom,
+      isLoading: true,
+    }));
     api
       .get(`/course/${router.query.courseId}`)
       .then(
         (response) => {
           console.log(response);
           if (response.status === 200) {
-            setCourse(response.data.courses);
+            //update current course in courses atom state
+            setCourseAtom((prevAtom) => ({
+              isLoading: false,
+              courses:
+                prevAtom.courses?.map((c) =>
+                  c._id === response?.data?.course?._id
+                    ? response.data.course
+                    : c
+                ) ?? null,
+            }));
           } else {
-            setCourse(undefined);
+            setCourseAtom((prevAtom) => ({
+              isLoading: false,
+              courses: prevAtom.courses,
+            }));
           }
         },
         (error) => {
@@ -57,11 +69,14 @@ export default function CoursePage({}) {
         }
       )
       .finally(() => {
-        setIsLoading(false);
+        setCourseAtom((prevAtom) => ({
+          ...prevAtom,
+          isLoading: false,
+        }));
       });
 
     return () => {};
-  }, [router.query.courseId]);
+  }, [router.query.courseId, setCourseAtom]);
 
   const handlePurchaseCourse = () => {
     setIsLoading(true);

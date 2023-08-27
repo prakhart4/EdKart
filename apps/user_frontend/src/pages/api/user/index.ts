@@ -2,7 +2,7 @@ import { getUserById } from "db";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
-  data?: any;
+  user?: any;
   success: boolean;
 };
 
@@ -21,7 +21,7 @@ export default async function handler(
           userId,
         }); /* find all the data in our database */
         console.log(user);
-        res.status(200).json({ success: true, data: user });
+        res.status(200).json({ success: true, user });
       } catch (error) {
         console.log(error);
         res.status(400).json({ success: false });

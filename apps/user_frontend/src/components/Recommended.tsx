@@ -1,11 +1,12 @@
 import { Box, CardActionArea, Paper, Stack, Typography } from "@mui/material";
 import { StyledSection } from "ui/StyledSection";
-import { coursesState } from "store";
+import { coursesState, userState } from "store";
 import { stringToColor } from "ui";
 import { useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
 
 export function Recommended({ title }: { title: string }) {
+  const { user, isLoading: userLoading } = useRecoilValue(userState);
   const { courses: RecommendedCourses, isLoading } =
     useRecoilValue(coursesState);
 
@@ -18,50 +19,54 @@ export function Recommended({ title }: { title: string }) {
       {isLoading && <Typography>Loading...</Typography>}
       <Box display={"flex"} flexGrow={1} overflow={"overlay"}>
         <Stack direction={"row"} spacing={2}>
-          {RecommendedCourses?.map((course, index) => (
-            <Paper
-              key={course.title + index}
-              sx={{
-                ...(course.imageLink
-                  ? {
-                      backgroundImage: `url(${course.imageLink})`,
-                      backgroundSize: "cover",
-                      backgroundRepeat: "no-repeat",
-                      backgroundPosition: "center",
-                    }
-                  : {}),
-                width: "25vh",
-                borderRadius: "10px",
-                backgroundColor: stringToColor(course.title),
-              }}
-            >
-              <CardActionArea
+          {!userLoading &&
+            RecommendedCourses?.filter(
+              (course) =>
+                !user?.purchasedCourses.map((pc) => pc._id).includes(course._id)
+            )?.map((course, index) => (
+              <Paper
+                key={course.title + index}
                 sx={{
-                  ...(course?.imageLink
-                    ? { background: "rgba(255,255,255,0.2)" }
+                  ...(course.imageLink
+                    ? {
+                        backgroundImage: `url(${course.imageLink})`,
+                        backgroundSize: "cover",
+                        backgroundRepeat: "no-repeat",
+                        backgroundPosition: "center",
+                      }
                     : {}),
-                  padding: "10px",
-                  height: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "start",
-                  justifyContent: "start",
+                  width: "25vh",
+                  borderRadius: "10px",
+                  backgroundColor: stringToColor(course.title),
                 }}
-                onClick={() => router.push(`/courses/${course._id}`)}
               >
-                <Typography>{course.title}</Typography>
-                <br />
-                <Typography variant="subtitle1">
-                  {course.description}
-                </Typography>
-                <br />
-                <Box flexGrow={1} />
-                <Typography variant="subtitle1">
-                  Price: {course.price}
-                </Typography>
-              </CardActionArea>
-            </Paper>
-          ))}
+                <CardActionArea
+                  sx={{
+                    ...(course?.imageLink
+                      ? { background: "rgba(255,255,255,0.2)" }
+                      : {}),
+                    padding: "10px",
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "start",
+                    justifyContent: "start",
+                  }}
+                  onClick={() => router.push(`/courses/${course._id}`)}
+                >
+                  <Typography>{course.title}</Typography>
+                  <br />
+                  <Typography variant="subtitle1">
+                    {course.description}
+                  </Typography>
+                  <br />
+                  <Box flexGrow={1} />
+                  <Typography variant="subtitle1">
+                    Price: {course.price}
+                  </Typography>
+                </CardActionArea>
+              </Paper>
+            ))}
         </Stack>
       </Box>
     </StyledSection>

@@ -2,7 +2,7 @@ import { createCourse, getCourseById, getCourses } from "db";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
-  courses?: any;
+  course?: any;
   success: boolean;
   message?: string;
 };
@@ -23,11 +23,11 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const courses = await getCourseById({
+        const course = await getCourseById({
           courseId: courseId?.toString(),
         });
-        console.log(courses);
-        res.status(200).json({ success: true, courses });
+        console.log(course);
+        res.status(200).json({ success: true, course });
       } catch (error) {
         console.log(error);
         res.status(400).json({ success: false });
