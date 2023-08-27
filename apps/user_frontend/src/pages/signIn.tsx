@@ -17,7 +17,7 @@ import {
 import { AxiosError } from "axios";
 import React, { use, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { userState } from "store";
+import { userLoggedInState, userState } from "store";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { api } from "@/util/api";
 import { userLoadingState } from "store";
@@ -27,6 +27,7 @@ type Props = {};
 export default function Login({}: Props) {
   const [showPassword, setShowPassword] = React.useState(false);
   const loading = useRecoilValue(userLoadingState);
+  const isLoggedIn = useRecoilValue(userLoggedInState);
   const setUserAtom = useSetRecoilState(userState);
   const { push } = useRouter();
   const {
@@ -164,6 +165,7 @@ export default function Login({}: Props) {
         <CardActions>
           <LoadingButton
             loading={loading}
+            disabled={isLoggedIn || loading}
             loadingPosition="start"
             startIcon={<></>}
             type="submit"

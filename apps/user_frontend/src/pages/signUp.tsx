@@ -1,4 +1,4 @@
-import { userLoadingState, userState } from "store";
+import { userLoadingState, userLoggedInState, userState } from "store";
 import axios, { AxiosError, AxiosInstance } from "axios";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
@@ -25,6 +25,7 @@ type Props = {};
 export default function SignUp({}: Props) {
   const [showPassword, setShowPassword] = React.useState(false);
   const loading = useRecoilValue(userLoadingState);
+  const isLoggedIn = useRecoilValue(userLoggedInState);
   const setUserAtom = useSetRecoilState(userState);
   const { push } = useRouter();
   const {
@@ -170,6 +171,7 @@ export default function SignUp({}: Props) {
         <CardActions>
           <LoadingButton
             loading={loading}
+            disabled={isLoggedIn || loading}
             loadingPosition="start"
             startIcon={<></>}
             type="submit"
