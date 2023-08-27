@@ -1,5 +1,4 @@
-import { coursesState } from "store";
-import { userState } from "store";
+import { coursesState, purchasedCoursesState } from "store";
 import { api } from "@/util/api";
 import { ArrowBack, VideoCall } from "@mui/icons-material";
 import {
@@ -17,7 +16,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 
 export default function CoursePage({}) {
   const router = useRouter();
-  const userAtom = useRecoilValue(userState);
+  const purchasedCourses = useRecoilValue(purchasedCoursesState);
   const [courseAtom, setCourseAtom] = useRecoilState(coursesState);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -129,11 +128,8 @@ export default function CoursePage({}) {
   };
 
   const isPurchased = useMemo(
-    () =>
-      userAtom.user?.purchasedCourses
-        .map((u) => u._id)
-        .includes(course?._id ?? ""),
-    [userAtom.user, course]
+    () => purchasedCourses?.map((u) => u._id).includes(course?._id ?? ""),
+    [purchasedCourses, course?._id]
   );
 
   return (

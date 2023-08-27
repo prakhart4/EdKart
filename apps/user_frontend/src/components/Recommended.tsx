@@ -1,12 +1,19 @@
-import { Box, CardActionArea, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  CardActionArea,
+  CircularProgress,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { StyledSection } from "ui/StyledSection";
-import { coursesState, userState } from "store";
+import { coursesState, purchasedCoursesState, userState } from "store";
 import { stringToColor } from "ui";
 import { useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
 
 export function Recommended({ title }: { title: string }) {
-  const { user, isLoading: userLoading } = useRecoilValue(userState);
+  const purchasedCourses = useRecoilValue(purchasedCoursesState);
   const { courses: RecommendedCourses, isLoading } =
     useRecoilValue(coursesState);
 
@@ -16,13 +23,15 @@ export function Recommended({ title }: { title: string }) {
       <Typography variant="h5" marginBottom={4}>
         {title}
       </Typography>
-      {isLoading && <Typography>Loading...</Typography>}
+
       <Box display={"flex"} flexGrow={1} overflow={"overlay"}>
         <Stack direction={"row"} spacing={2}>
-          {!userLoading &&
+          {isLoading ? (
+            <CircularProgress />
+          ) : (
             RecommendedCourses?.filter(
               (course) =>
-                !user?.purchasedCourses.map((pc) => pc._id).includes(course._id)
+                !purchasedCourses?.map((pc) => pc._id).includes(course._id)
             )?.map((course, index) => (
               <Paper
                 key={course.title + index}
@@ -66,7 +75,8 @@ export function Recommended({ title }: { title: string }) {
                   </Typography>
                 </CardActionArea>
               </Paper>
-            ))}
+            ))
+          )}
         </Stack>
       </Box>
     </StyledSection>

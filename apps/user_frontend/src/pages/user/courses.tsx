@@ -1,14 +1,15 @@
-import { userState } from "store";
+import { purchasedCoursesState, userState } from "store";
 import { api } from "@/util/api";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { CourseCard } from "ui";
 
 type Props = {};
 
 export default function UserCourses({}: Props) {
-  const [userAtom, setUserAtom] = useRecoilState(userState);
+  const purchasedCourses = useRecoilValue(purchasedCoursesState);
+  const setUserAtom = useSetRecoilState(userState);
 
   useEffect(() => {
     api
@@ -40,7 +41,7 @@ export default function UserCourses({}: Props) {
         </Typography>
       </Box>
       <Grid padding={2} container>
-        {userAtom.user?.purchasedCourses?.map((course, index) => (
+        {purchasedCourses?.map((course, index) => (
           <CourseCard
             course={course}
             key={course.title + index}

@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { StyledSection } from "ui/StyledSection";
 import { useRecoilValue } from "recoil";
-import { userState } from "store";
+import { purchasedCoursesState, userLoadingState, userState } from "store";
 import { stringToColor } from "ui";
 import { useRouter } from "next/navigation";
 
@@ -20,7 +20,8 @@ export function UpcomingEvents({
   // comingSoonCourses: Course[];
 }) {
   const router = useRouter();
-  const { user, isLoading } = useRecoilValue(userState); //todo add selector
+  const purchasedCourses = useRecoilValue(purchasedCoursesState);
+  const isLoading = useRecoilValue(userLoadingState);
 
   return (
     <StyledSection sx={{ display: "flex", flexDirection: "column" }}>
@@ -32,7 +33,7 @@ export function UpcomingEvents({
           {isLoading ? (
             <CircularProgress />
           ) : (
-            user?.purchasedCourses?.map((course, index) => (
+            purchasedCourses?.map((course, index) => (
               <Paper
                 key={course.title + index}
                 sx={{
