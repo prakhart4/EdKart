@@ -50,9 +50,11 @@ export const CourseCard = ({
           <Typography gutterBottom variant="body1" component="h2">
             {course.title}
           </Typography>
-          <Typography variant="body2" mb={2}>
-            by <b>{course?.description}</b>
-          </Typography>
+          {course?.author && (
+            <Typography variant="body2" mb={2}>
+              by <b>{course?.author}</b>
+            </Typography>
+          )}
           {showPrice && (
             <Typography variant="body2" color="#B12704">
               Price: Rs{course.price}
