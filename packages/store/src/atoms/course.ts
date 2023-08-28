@@ -5,6 +5,7 @@ export interface Course {
   title: string;
   description: string;
   imageLink: string;
+  author: string;
   price: string;
 }
 
