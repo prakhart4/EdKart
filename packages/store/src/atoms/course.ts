@@ -1,11 +1,12 @@
 import { atom } from "recoil";
+import { User } from "./user";
 
 export interface Course {
   _id: string;
   title: string;
   description: string;
   imageLink: string;
-  author: string;
+  author: string | User;
   price: string;
 }
 

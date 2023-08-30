@@ -50,9 +50,9 @@ export const CourseCard = ({
           <Typography gutterBottom variant="body1" component="h2">
             {course.title}
           </Typography>
-          {course?.author && (
+          {typeof course?.author !== "string" && course?.author?.name && (
             <Typography variant="body2" mb={2}>
-              by <b>{course?.author}</b>
+              by <b>{course?.author?.name}</b>
             </Typography>
           )}
           {showPrice && (

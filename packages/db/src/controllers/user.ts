@@ -20,9 +20,10 @@ export const getUserById = async ({ userId }: { userId: string }) => {
   }
 
   //find user
-  const result = await User.findOne({ _id: userId }).populate(
-    "purchasedCourses"
-  );
+  const result = await User.findOne({ _id: userId }).populate({
+    path: "purchasedCourses",
+    populate: { path: "author" },
+  });
 
   const user = result?.toJSON();
 

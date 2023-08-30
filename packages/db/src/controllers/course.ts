@@ -10,7 +10,7 @@ import { dbConnect } from "../lib/dbConnect";
  */
 export const getCourses = async ({ userId }: { userId: string }) => {
   await dbConnect();
-  const courses = await Course.find({ published: true });
+  const courses = await Course.find({ published: true }).populate("author");
   //   res.json({ courses });
   if (courses) {
     const user = await User.findOne({ _id: userId });
@@ -37,7 +37,7 @@ export const getCourses = async ({ userId }: { userId: string }) => {
  */
 export const getCourseById = async ({ courseId }: { courseId: string }) => {
   await dbConnect();
-  const course = await Course.findById(courseId);
+  const course = await Course.findById(courseId).populate("author");
   if (course) {
     return course;
   } else {
